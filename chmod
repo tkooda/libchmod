@@ -1,0 +1,17 @@
+#!/bin/sh
+
+## path to library that contains chmod()
+export LIBCHMOD_PATH_LIB_ORIG="/lib/libc.so.6"
+
+## regex of paths to restrict chmod() operations in
+export LIBCHMOD_PATH_REGEX="^/var/"
+
+## limit chmod() operations
+export LIBCHMOD_MODE_DIR_ALLOWED="2775"  # u+rwx,g+rwxs,o+rx = (\2775)
+export LIBCHMOD_MODE_DIR_REQUIRED="775"  # u+rwx,g+rwx,o+rx  =  (\775)
+export LIBCHMOD_MODE_FILE_ALLOWED="775"  # u+rwx,g+rwx,o+rx  =  (\775)
+export LIBCHMOD_MODE_FILE_REQUIRED="664" # u+rw,g+rw,o+r     =  (\664)
+
+export LD_PRELOAD="./libchmod.so.1.0.1"
+exec /bin/chmod "$@"
+
